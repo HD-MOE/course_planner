@@ -75,19 +75,59 @@ icon("🧭 ECG Agent")
 st.subheader("Let AI agents guide your educational and career journey!",
                  divider="rainbow", anchor=False)
 
-with st.sidebar:
-        st.header("👇 Enter your details")
-        with st.form("my_form"):
+st.header("👇 Enter your details")
+
+with st.form("my_form"):
             interests = st.text_input(
-                "What are your interests?", placeholder="Programming")
+                "What are your interests?", placeholder="E.g., reading, engineering, outdoor activities.")
             strengths = st.text_input(
-                "What are your strengths?", placeholder="Good in Mathematics and Science")
+                "What are your strengths?", placeholder="E.g., strong in science, skilled in sports.")
             weaknesses = st.text_input(
-                "What are your weaknesses?", placeholder="Not good in English")
+                "What are your weaknesses?", placeholder="E.g., difficulty with presentations, needs improvement in math.")
 
             submitted = st.form_submit_button("Submit")
 
-        st.divider()
+with st.expander("**💡 Tips to Get the Best Recommendations**"):
+     st.markdown('''### Tips for Each Field
+
+**What are your interests?**
+- **Be specific**: Instead of broad terms like "sports," try "basketball" or "swimming."
+- **Think about topics you enjoy**: For example, “coding” instead of just “technology.”
+
+**What are your strengths?**
+- **Mention skills or subjects**: E.g., “problem-solving” or “creative writing.”
+- **Use clear phrases**: Avoid general terms. Instead of "good at subjects," specify like “strong in math.”
+
+**What are your weaknesses?**
+- **Identify areas for improvement**: E.g., "public speaking" or "organization skills."
+- **Be constructive**: For example, say “working on time management” instead of just “time management.”
+
+---
+
+### General Tips
+
+- **Use Relevant Keywords**: Describe your interests and strengths using words that relate to school subjects or career paths.
+- **Provide Context**: Link your interests and strengths where possible. For example, if you’re interested in “art,” you could mention “attention to detail” as a related strength.
+- **Refine Based on Previous Searches**: Build on results from previous searches or queries to adjust your answers. For instance, if you received career options in technology, consider adding interests or strengths related to “coding” or “problem-solving” to make future recommendations even more relevant.
+''')
+     
+st.subheader("",
+                 divider="rainbow", anchor=False)
+
+
+with st.sidebar:
+        # st.header("👇 Enter your details")
+        # with st.form("my_form"):
+        #     interests = st.text_input(
+        #         "What are your interests?", placeholder="Programming")
+        #     strengths = st.text_input(
+        #         "What are your strengths?", placeholder="Good in Mathematics and Science")
+        #     weaknesses = st.text_input(
+        #         "What are your weaknesses?", placeholder="Not good in English")
+
+        #     submitted = st.form_submit_button("Submit")
+
+        # st.divider()
         
         with st.expander("**⚠️ IMPORTANT NOTICE ⚠️**"):
             multi ='''This web application is developed as a proof-of-concept prototype.

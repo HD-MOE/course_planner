@@ -62,23 +62,28 @@ class ECGTasks():
             4. Generate a structured list of recommended sectors with corresponding tracks and job roles that align with the student’s unique profile.
             - Ensure recommendations prioritise the student’s key strengths and interests.
 
-            5. Use only the sectors, tracks, and job roles specified in the JSON file WITHOUT creating or modifying any details.
+            5. Guidance for Course Expert Agent: Clearly indicate which sectors are more relevant to the student’s strengths and interests, 
+            instructing the Course Expert agent to focus their course recommendations on these priority sectors.
+                                       
+            6. Use only the sectors, tracks, and job roles specified in the JSON file WITHOUT creating or modifying any details.
             
-            6. Strictly follow the exact names of sectors, tracks, and skills as provided in the JSON file to maintain accuracy.
+            7. Strictly follow the exact names of sectors, tracks, roles, job role descriptions and skills as provided in the JSON file to maintain accuracy.
             """),
             
             expected_output="""
-            If inputs are irrelevant, return: "Please provide strengths and interests that are relevant to identifying suitable career paths and academic fields."
+            1. If inputs are irrelevant, return: "Please provide strengths and interests that are relevant to identifying suitable career paths and academic fields."
 
             Otherwise, generate a structured JSON output with the code wrapper that provides recommended sectors aligned with the student’s unique personality profile. 
             For each sector:
                 1. Use only sectors from the provided JSON file as the source.
                 2. Structure the JSON output so each sector includes corresponding tracks and job roles as nested arrays or objects.
 
-            Include explanatory comments in Markdown format after the JSON output, providing useful insights 
+            2. Include explanatory comments in Markdown format after the JSON output, providing useful insights 
             into the choices made based on the student’s personality profile, with stronger emphasis on the student's interests and strengths.
             
-            If age-appropriateness was flagged, ensure that recommendations remain suitable and constructive for a student aged 13-18.
+            3. Instruct the Course Expert Agent to focus on the sectors that are most relevant to the student’s profile when recommending courses. 
+
+            4. If age-appropriateness was flagged, ensure that recommendations remain suitable and constructive for a student aged 13-18.
             """,
             tools = [JSONSearchTool(json_path='./source/output.json')],
             context = context,
@@ -93,25 +98,27 @@ class ECGTasks():
             If inputs are irrelevant:
             - Return a response encouraging the student to provide strengths and interests that relate to selecting courses aligned with their career and academic guidance.
         
-            2. Analyse the Recommendations: Use the structured list of sectors, tracks, and job roles provided by the Skills Framework expert to identify suitable courses.
+            2. Analyse the Recommendations: Use the structured list of sectors, tracks, and job roles provided by the Skills Framework Expert agent to identify suitable courses.
 
-            3. Priority Focus on Key Attributes: Using validated data, prioritize the student’s interests first, followed by their strengths, to identify suitable courses.
+            3. Priority Focus on Key Sectors: Using validated data, focus your course recommendations on the sectors highlighted by Skills Framework Expert agent as most relevant to the student’s profile.
+            - Begin by identifying courses that directly align with these priority sectors.
+            - Prioritise the student's interests and strengths within these key sectors when identifying suitable courses.
             - Ensure the selected courses align with these prioritized aspects of the student’s profile, along with any noted weaknesses.
-
+                           
             4. Age-Appropriateness Check: If any previous agent flagged age-appropriateness, ensure all recommended courses are suitable for a student aged 13-18.
             - Select courses that match the student’s current educational level and developmental stage.
             - Avoid recommending advanced courses that may not be suitable for this age range.
 
             5. Generate Course Recommendations: Identify suitable courses in schools by thoroughly reading all PDF files provided in the <courses> tag. 
-            - All PDF files MUST be read carefully to ensure accurate information.
+            - STRICTLY ensure that each PDF file provided in the <courses> tag is thoroughly read carefully and scanned for potential matches to ensure accurate information.
             - Generate a structured list of recommended courses with required information, enclosed in the <information> tag.
 
-            6. Strictly Follow the Provided Data: Only use information from the PDF files listed under <courses>. Do NOT create or modify any course details beyond what is specified.
+            6. Strictly follow the Provided Data: Only use information from the PDF files listed under <courses>. Do NOT create or modify any course details beyond what is specified.
 
             <information>
             1. Name of the course
-            2. Name of the school
-            3. Course Code
+            2. Name of the school (Include the branch name if the school is ITE [e.g., "ITE College East"])
+            3. Course Code (Must be exactly three characters in length, where the first character is a letter, followed by two numbers)
             4. Academic Requirements (Aggregate type with its last letter)
             5. Academic Requirements (Range for the aggregate type)
             6. Academic Requirements (Minimum Entry Requirement of subjects and grades)
@@ -125,7 +132,8 @@ class ECGTasks():
             """),
 
             expected_output="""
-            Generate a structured list of recommended courses with corresponding details, prioritising the student’s key interests and strengths. """,
+            Generate a structured list of recommended courses with corresponding details, 
+            with a primary focus on the sectors highlighted by the Skills Framework Expert agent as relevant to the student’s profile.""",
             tools = [PDFSearchTool()],
             context = context,
             async_execution=False,
@@ -162,7 +170,9 @@ class ECGTasks():
         
             3. Create and name the two tables:
                 (I) Display career sector details, with columns for Sector, Track, Job Roles, and Recommended Courses.
+                - Include this source link under the table: **[Source: Skills Framework - SkillsFuture](https://www.skillsfuture.gov.sg/initiatives/students/skills-framework)**
                 (II) List courses, with columns for Course, School, Course Code, Aggregate Type, Aggregate Range, and Minimum Entry Requirements specific to Singapore.
+                - Include this source link under the table: **[Source: MOE 2024 JAE Courses PDF](https://www.moe.gov.sg/-/media/files/post-secondary/2024-jae/2024-jae-courses.pdf)**
 
             4. Format the Minimum Entry Requirement section by listing each condition with letters (a, b, c, ...) and bolding each letter.
             - Keep all conditions on the same line, separated by commas or other appropriate punctuation.

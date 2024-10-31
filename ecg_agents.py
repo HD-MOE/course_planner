@@ -1,11 +1,27 @@
 from crewai import Agent
 import re
 import streamlit as st
-from langchain_community.llms import OpenAI
+#from langchain_community.llms import OpenAI
 
 # from tools.browser_tools import BrowserTools
 # from tools.calculator_tools import CalculatorTools
 # from tools.search_tools import SearchTools
+
+# import os
+# # # from dotenv import load_dotenv
+# # # load_dotenv('.env')
+# os.environ["OPENAI_API_KEY"] = ""
+# os.environ["OPENAI_API_BASE"] = "https://litellm.govtext.gov.sg/"
+# os.environ["OPENAI_MODEL_NAME"] = "gpt-4o-mini-prd-gcc2-lb"
+
+# llm = LLM(
+#     model= "gpt-4o-mini",
+#     api_key="",
+#     base_url= "https://litellm.govtext.gov.sg/",
+#     default_headers= {"user-agent": "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0"},
+#     custom_llm_provider="azure openai",
+#     deployment_id="gpt-4o-mini-prd-gcc2-lb"   # Your Azure deployment name
+# )
 
 class ECGAgents():
 
@@ -70,11 +86,21 @@ class ECGAgents():
 # https://github.com/AbubakrChan/crewai-UI-business-product-launch/blob/main/main.py#L210 #
 ###########################################################################################
 class StreamToExpander:
-    def __init__(self, expander):
+    def __init__(self, expander, progress_bar=None, total_tasks=10):
         self.expander = expander
         self.buffer = []
         self.colors = ['red', 'green', 'blue', 'orange']  # Define a list of colors
         self.color_index = 0  # Initialize color index
+        self.progress_bar = progress_bar  # Add a progress bar instance
+        self.total_tasks = total_tasks  # Total tasks expected
+        self.detected_tasks = 0  # Track number of tasks detected for progress
+        self.status_placeholder = st.empty()  # Placeholder to display messages
+        self.messages = [                   # Define messages for each stage
+            "💨 Picking up speed...",
+            "🌟 Flying high...",
+            "🌤️ Soaring onward...",
+            "🌠 Reaching new heights...",
+        ]
 
     def write(self, data):
         # Filter out ANSI escape codes using a regular expression
@@ -88,9 +114,18 @@ class StreamToExpander:
             task_value = task_match_object.group(1)
         elif task_match_input:
             task_value = task_match_input.group(1).strip()
+            
 
         if task_value:
-            st.toast(":robot_face: " + task_value)
+            self.detected_tasks += 1  # Increment detected tasks count for each match
+            st.toast(":robot_face: " + self.messages[self.detected_tasks-1])
+            st.write(self.messages[self.detected_tasks-1]) # Update the message  for status bar
+
+        # Update progress bar based on the number of tasks detected
+        if self.progress_bar:
+            progress_status = min(self.detected_tasks / (self.total_tasks + 1), 1.0)  # Ensure it caps at 100%
+            self.progress_bar.progress(progress_status)
+            
 
         # Check if the text contains the specified phrase and apply color
         if "Entering new CrewAgentExecutor chain" in cleaned_data:
@@ -113,5 +148,6 @@ class StreamToExpander:
 
         self.buffer.append(cleaned_data)
         if "\n" in data:
-            self.expander.markdown(''.join(self.buffer), unsafe_allow_html=True)
+            # self.expander.markdown(''.join(self.buffer), unsafe_allow_html=True)
             self.buffer = []
+        

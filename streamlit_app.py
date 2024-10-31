@@ -7,6 +7,7 @@ from ecg_agents import ECGAgents, StreamToExpander
 from ecg_tasks import ECGTasks
 import streamlit as st
 import sys
+import time  # For adding a small delay to simulate completion
 # # import sqlite3
 
 # st.set_page_config(page_title="ECG Agent", page_icon="🧭", layout="wide")
@@ -158,15 +159,40 @@ with st.sidebar:
             unsafe_allow_html=True
         )
 
-
 if submitted:
+
     with st.status("🤖 **Agents at work...**", state="running", expanded=True) as status:
-        with st.container(height=500, border=False):
-            sys.stdout = StreamToExpander(st)
+
+        # Set up the progress bar
+        progress_bar = st.progress(0)  # Initialize at 0%
+
+        # Display toast message
+        st.toast(":robot_face: 🚀 Starting up...")
+        
+        # Update the message  for status bar
+        st.write("🚀 Starting up...")
+
+        with st.container(border=False):
+        # with st.container(height=500, border=False):
+            
+            # Initialize StreamToExpander with a progress bar
+            sys.stdout = StreamToExpander(st, progress_bar=progress_bar, total_tasks=4)
+
+            # Running CrewAI
             ecg_crew = ECGCrew(interests, strengths, weaknesses)
             result = ecg_crew.run()
-        status.update(label="✅ Action Plan Ready!",
-                      state="complete", expanded=False)
+
+            # After all tasks are printed, set progress to 100%
+            progress_bar.progress(1.0)
+            
+            # Display toast message
+            st.toast(":robot_face: ✨ One small step complete, your next big leap awaits!")
+
+            #Update the message  for status bar
+            st.write("✨ One small step complete, your next big leap awaits!")
+            time.sleep(3)
+
+        status.update(label="✅ Action Plan Ready!", state="complete", expanded=False)
 
     st.subheader("Here is your Action Plan 😎", anchor=False, divider="rainbow")
     st.markdown(result)

@@ -95,11 +95,17 @@ class StreamToExpander:
         self.total_tasks = total_tasks  # Total tasks expected
         self.detected_tasks = 0  # Track number of tasks detected for progress
         self.status_placeholder = st.empty()  # Placeholder to display messages
-        self.messages = [                   # Define messages for each stage
-            "💨 Picking up speed...",
-            "🌟 Flying high...",
-            "🌤️ Soaring onward...",
-            "🌠 Reaching new heights...",
+        # self.messages = [                   # Define messages for each stage
+        #     "💨 Picking up speed...",
+        #     "🌟 Flying high...",
+        #     "🌤️ Soaring onward...",
+        #     "🌠 Reaching new heights...",
+        # ]
+        self.progress = [                   # Define messages for progress bar
+            "💨 Picking up speed... 20% complete",
+            "🌟 Flying high... 40% complete",
+            "🌤️ Soaring onward... 60% complete",
+            "🌠 Reaching new heights... 80% complete",
         ]
 
     def write(self, data):
@@ -118,13 +124,13 @@ class StreamToExpander:
 
         if task_value:
             self.detected_tasks += 1  # Increment detected tasks count for each match
-            st.toast(":robot_face: " + self.messages[self.detected_tasks-1])
-            st.write(self.messages[self.detected_tasks-1]) # Update the message  for status bar
+            st.toast(":robot_face: " + self.progress[self.detected_tasks-1])
+            # st.write(self.messages[self.detected_tasks-1]) # Update the message  for status bar
 
         # Update progress bar based on the number of tasks detected
         if self.progress_bar:
             progress_status = min(self.detected_tasks / (self.total_tasks + 1), 1.0)  # Ensure it caps at 100%
-            self.progress_bar.progress(progress_status)
+            self.progress_bar.progress(progress_status, self.progress[self.detected_tasks-1])
             
 
         # Check if the text contains the specified phrase and apply color

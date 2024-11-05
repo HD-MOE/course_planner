@@ -1,6 +1,6 @@
-__import__('pysqlite3')
-import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+# __import__('pysqlite3')
+# import sys
+# sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 from crewai import Crew
 from ecg_agents import ECGAgents, StreamToExpander
@@ -73,7 +73,7 @@ class ECGCrew:
 
 icon("🧭 ECG Agent")
 
-st.subheader("Let AI agents guide your educational and career journey!",
+st.subheader("Let ECG agent guide your educational and career journey!",
                  divider="rainbow", anchor=False)
 
 st.header("👇 Enter your details")
@@ -88,24 +88,24 @@ with st.form("my_form"):
 
             submitted = st.form_submit_button("Submit")
 
-with st.expander("**💡 Tips to Get the Best Recommendations**"):
+with st.expander("**💡 Tips to Get the Best Recommendations**") as tip_expander:
      st.markdown('''### Tips for Each Field
 
-**What are your interests?**
+**💡 What are your interests?**
 - **Be specific**: Instead of broad terms like "sports," try "basketball" or "swimming."
 - **Think about topics you enjoy**: For example, “coding” instead of just “technology.”
-
-**What are your strengths?**
+                 
+**💡 What are your strengths?**
 - **Mention skills or subjects**: E.g., “problem-solving” or “creative writing.”
 - **Use clear phrases**: Avoid general terms. Instead of "good at subjects," specify like “strong in math.”
-
-**What are your weaknesses?**
-- **Identify areas for improvement**: E.g., "public speaking" or "organization skills."
+                 
+**💡 What are your weaknesses?**
+- **Identify areas for improvement**: E.g., "public speaking" or "organisation skills."
 - **Be constructive**: For example, say “working on time management” instead of just “time management.”
 
 ---
 
-### General Tips
+### 💡 General Tips
 
 - **Use Relevant Keywords**: Describe your interests and strengths using words that relate to school subjects or career paths.
 - **Provide Context**: Link your interests and strengths where possible. For example, if you’re interested in “art,” you could mention “attention to detail” as a related strength.
@@ -117,18 +117,6 @@ st.subheader("",
 
 
 with st.sidebar:
-        # st.header("👇 Enter your details")
-        # with st.form("my_form"):
-        #     interests = st.text_input(
-        #         "What are your interests?", placeholder="Programming")
-        #     strengths = st.text_input(
-        #         "What are your strengths?", placeholder="Good in Mathematics and Science")
-        #     weaknesses = st.text_input(
-        #         "What are your weaknesses?", placeholder="Not good in English")
-
-        #     submitted = st.form_submit_button("Submit")
-
-        # st.divider()
         
         with st.expander("**⚠️ IMPORTANT NOTICE ⚠️**"):
             multi ='''This web application is developed as a proof-of-concept prototype.
@@ -140,14 +128,6 @@ with st.sidebar:
 
 
         st.divider()
-        # Credits to joaomdmoura/CrewAI for the code: https://github.com/joaomdmoura/crewAI
-        # st.sidebar.markdown(
-        # """
-        # Credits to [**@joaomdmoura**](https://twitter.com/joaomdmoura)
-        # for creating **crewAI** 🚀
-        # """,
-        #     unsafe_allow_html=True
-        # )
 
         st.sidebar.info("Click the logo to visit GitHub repo", icon="👇")
         st.sidebar.markdown(
@@ -161,16 +141,16 @@ with st.sidebar:
 
 if submitted:
 
-    with st.status("🤖 **Agents at work...**", state="running", expanded=True) as status:
+    with st.status("🤖 **Agent at work...**", state="running", expanded=True) as status:
 
         # Set up the progress bar
-        progress_bar = st.progress(0)  # Initialize at 0%
+        progress_bar = st.progress(0, "🚀 Starting up... 0% complete")  # Initialize at 0.1%
 
         # Display toast message
-        st.toast(":robot_face: 🚀 Starting up...")
+        st.toast(":robot_face: 🚀 Starting up... 0% complete")
         
         # Update the message  for status bar
-        st.write("🚀 Starting up...")
+        # st.write("🚀 Starting up...")
 
         with st.container(border=False):
         # with st.container(height=500, border=False):
@@ -183,13 +163,13 @@ if submitted:
             result = ecg_crew.run()
 
             # After all tasks are printed, set progress to 100%
-            progress_bar.progress(1.0)
+            progress_bar.progress(1.0, "✨ One small step complete, your next big leap awaits! 100% complete!")
             
             # Display toast message
-            st.toast(":robot_face: ✨ One small step complete, your next big leap awaits!")
+            st.toast(":robot_face: ✨ One small step complete, your next big leap awaits! 100% complete!")
 
             #Update the message  for status bar
-            st.write("✨ One small step complete, your next big leap awaits!")
+            #st.write("✨ One small step complete, your next big leap awaits!")
             time.sleep(3)
 
         status.update(label="✅ Action Plan Ready!", state="complete", expanded=False)

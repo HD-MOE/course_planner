@@ -1,4 +1,9 @@
 import streamlit as st
+from tools.utility import check_password
+
+# Do not continue if check_password is not True.  
+if not check_password():  
+    st.stop()
 
 ecg_page = st.Page("streamlit_app.py", title="ECG Agent", icon= "🧭" )
 about_us_page = st.Page("1_About Us.py", title="About Us", icon= "🧑🏻‍🏫" )

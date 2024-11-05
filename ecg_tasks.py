@@ -182,6 +182,8 @@ class ECGTasks():
                 - Career sector insights based on the SkillsFuture framework
                 - Skill development steps relevant to Singapore’s education system
                 - Specific actions for meeting eligibility for chosen courses and career paths, tailored to the student’s stage of development if flagged for age-appropriateness.
+
+            6. Add some emoji to make it less formal and end the action plan with encouraging words.
             """,
             context = context,
             agent=agent)

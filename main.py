@@ -1,5 +1,5 @@
 import streamlit as st
-from tools.utility import check_password
+from utility import check_password
 
 # Do not continue if check_password is not True.  
 if not check_password():  
